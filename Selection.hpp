@@ -135,12 +135,21 @@ public:
         Output: N/A
 
         */
-        int commandPosition;
+       try
+       {
+           int commandPosition;
         commandPosition=pPath.find_first_of("Mm");
         pPath.erase(0,commandPosition+2);
         pXvalue=stod(pPath.substr(0,pPath.find(",")));
         pPath.erase(0,pPath.find(",")+1);
-        pYValue=stod(pPath.substr(0,pPath.find(",")));
+        pYValue=stod(pPath.substr(0,pPath.find(",")));/* code */
+       }
+       catch(const std::exception& e)
+       {
+           //cout << pPath << endl;
+       }
+       
+        
     }
 
     void selectPathPoints(vector<vector<double>>* pAllPoints, string pPoints, double pXMoveValue,double pYMoveValue){
@@ -189,7 +198,7 @@ public:
         }
         catch(const std::exception& e)
         {
-            cout << "jump" << endl;
+            //cout << "jump" << endl;
         }
 
 
@@ -314,7 +323,12 @@ public:
         }
         else if(string(pNode->name())=="path"){
             string pathValue=pNode->first_attribute("d")->value();
+<<<<<<< HEAD
             double pathXValue, pathYValue;
+=======
+            //cout << pNode->first_attribute("d")->value() << endl;
+            double pathXValue = 0, pathYValue = 0;
+>>>>>>> master
             getMoveValues(pathXValue,pathYValue,pathValue);
             Path* newPath=new Path(pathXValue,pathYValue,selectPathRange(pathValue,pathXValue,pathYValue),pMatchColor);
             newPath->setAttributeD(pNode->first_attribute("d")->value());

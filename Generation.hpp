@@ -47,13 +47,21 @@
 
 
      */
-     void producer(vector<Element*> &pElementsList, int pFrames){ //producer ????
+     void producer(vector<Element*> &pElementsList, int pFrames){ 
          int currentElementPointer = 0, auxFrames = pFrames;
          int newX, newY;
+         if (pElementsList.size() == 0){
+            currentFrame = -1;
+            return;
+         }
 
          while(currentFrame < pFrames){
                 currentElement =  pElementsList.at(currentElementPointer);
                 vector<vector<int>> movimientos = currentElement->getMovements();
+                if(movimientos.size() == 0){
+                    currentElementPointer++;
+                    continue;
+                }
 
                 newX = currentElement->getMovements().at(currentFrame).at(0); // se agarra el elemento j de la lista, y se le asigna la coordenada x del punto currentFrame (frame) de la lista de movimientos
                 newY = currentElement->getMovements().at(currentFrame).at(1); // se agarra el elemento j de la lista, y se le asigna la coordenada y del punto i (frame) de la lista de movimientos

@@ -52,7 +52,7 @@ public:
         Output: N/A
         */
         svg = pSVGdetails;
-        cout << "seleccion" << endl;
+        cout << "Iniciar seleccion..." << endl;
         selection->startSelection(pNode,pColors,pPositions,&pSVGdetails);
         int code = 1;
         int* codePointer = &code;
@@ -67,8 +67,8 @@ public:
         selection->notify(codePointer);
         code = 2;
         routing->notify(codePointer);
-        // code = 0;
-        // generation->notify(codePointer);*/
+        code = 0;
+        generation->notify(codePointer);
     }
 
     void update(void* pCode) {

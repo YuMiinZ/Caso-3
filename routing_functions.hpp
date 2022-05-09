@@ -204,10 +204,6 @@ void secondQuadrant(Element* &pElement, int pLastX, int pLastY, double pDegrees,
     int newX, newY, displacement = pElement->getDisplacement(), auxDisplacement = displacement, frames = pElement->getHypotenuse() / displacement;
     int actualDegrees = pDegrees;
 
-    cout << pElement->getMovements().size() << endl;
-    cout << pElement->getMovements2().size() << endl;
-    cout << auxDisplacement << endl;
-
     if (pElement->getMovements().size() >= frames && pElement->getAttribute() != "line"){ //si ya el vector está lleno retorna
         return;
     }
@@ -225,7 +221,6 @@ void secondQuadrant(Element* &pElement, int pLastX, int pLastY, double pDegrees,
     }
 
     while (auxDisplacement < 10){
-        cout << "while" << endl;
         auxDisplacement += displacement;
         pElement->addMovement(pLastX, pLastY);
     }
@@ -438,9 +433,13 @@ void determinePoints90(Element* &pElement, int pWidth, double pDegrees, int pFra
     pElement->setFinalXCoord(finalX);
     pElement->setFinalYCoord(finalY);
     displacement = hypotenuse / pFrames;
-    pElement->setDisplacement(displacement);
+    if (displacement  <= 1){
+        pElement->setDisplacement(10);
+    }
+    else{
+        pElement->setDisplacement(displacement);
+    }
 
-    cout << displacement << " - " << hypotenuse;
 
     if (pElement->getAttribute() == "line"){
         pElement->setAttribute("none");
@@ -499,7 +498,13 @@ void determinePoints180(Element* &pElement, double pDegrees, int pFrames){
     pElement->setFinalXCoord(finalX);
     pElement->setFinalYCoord(finalY);
     displacement = hypotenuse / pFrames;
-    pElement->setDisplacement(displacement);
+
+    if (displacement  <= 1){
+        pElement->setDisplacement(10);
+    }
+    else{
+        pElement->setDisplacement(displacement);
+    }
 
     if (pElement->getAttribute() == "line"){
         pElement->setAttribute("none");
@@ -559,7 +564,13 @@ void determinePoints270(Element* &pElement, int pHeight, double pDegrees, int pF
     pElement->setFinalXCoord(finalX);
     pElement->setFinalYCoord(finalY);
     displacement = hypotenuse / pFrames;
-    pElement->setDisplacement(displacement);
+    
+    if (displacement  <= 1){
+        pElement->setDisplacement(10);
+    }
+    else{
+        pElement->setDisplacement(displacement);
+    }
 
 
     if (pElement->getAttribute() == "line"){
@@ -622,7 +633,12 @@ void determinePoints360(Element* &pElement, int pWidth, int pHeight, double pDeg
     pElement->setFinalXCoord(finalX);
     pElement->setFinalYCoord(finalY);
     displacement = hypotenuse / pFrames;
-    pElement->setDisplacement(displacement);
+    if (displacement  <= 1){
+        pElement->setDisplacement(10);
+    }
+    else{
+        pElement->setDisplacement(displacement);
+    }
 
     if (pElement->getAttribute() == "line"){
         pElement->setAttribute("none");

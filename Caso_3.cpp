@@ -84,13 +84,11 @@ int main()
 
     }
 
-    cout << height << " /// " << width << endl;
-    cout << (int)svgDetails.getHeight() << " /// " << (int)svgDetails.getWidth() << endl;
     svgDetails.setDoc(&document);
     svgDetails.setFileName(fileName);
 
-    vector<string> colors = {"#00E4FF", "#FF00B9", "#FFE800", "#F7FF00", "#00FF1A", "#FF0101" , "#FF8101"};
-    vector<vector<double>> positions = {{406, 270}, {500, 600}, {466, 3687}, {2295, 2676}, {1000, 1800}, {2645, 1820}, {160, 464}, {200, 500}, {400, 200}, {264.013,440}, {500,500}};
+    vector<string> colors = {"#00E4FF", "#FF00B9", "#FFE800", "#F7FF00", "#00FF1A", "#FF0101" , "#FF8101", "#FFFFFF"};
+    vector<vector<double>> positions = {{406, 270}, {500, 600}, {730, 32}, {466, 3687}, {2295, 2676}, {1000, 1800}, {2645, 1820}, {160, 464}, {200, 500}, {400, 200}, {264.013,440}, {500,500}};
     animator->start(document.first_node(), colors, positions, svgDetails);
 
     delete(animator);
