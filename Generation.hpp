@@ -116,7 +116,7 @@
              string stringXML = ss.str(); //Convierte de stringstream a string
              theNewFile << stringXML; //Escribe el string en el archivo
              theNewFile.close();
-
+             currentElement->setGenerateElement(false);
              //createAnotherSVG = false;
          }
      }
