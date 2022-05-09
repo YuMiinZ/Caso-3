@@ -67,14 +67,18 @@
                     currentElementPointer = 0;
                     currentFrame++;
                     Generation::createAnotherSVG = true;
-                    generation();
-                    //queueOfElements.push(currentElement); //push a la cola de eventos
+                    //generation();
+                    currentElement->setGenerateElement(true);
+                    currentElement->setNumberFileName(currentFrame);
+                    queueOfElements.push(currentElement); //push a la cola de eventos
                     continue;
                 }
                 else{
                     currentElementPointer++;
-                    generation();
-                    //queueOfElements.push(currentElement); //push a la cola de eventos
+                    //generation();
+                    currentElement->setGenerateElement(true);
+                    currentElement->setNumberFileName(currentFrame);
+                    queueOfElements.push(currentElement); //push a la cola de eventos
                     continue;
                 }
 
@@ -84,22 +88,25 @@
              currentFrame++;
              currentElementPointer = currentFrame;
              createAnotherSVG = true; //falta ponerlo de nuevo en false
-             //queueOfElements.push(currentElement); //push a la cola de eventos
-             generation();
+             currentElement->setGenerateElement(true);
+             currentElement->setNumberFileName(currentFrame);
+             queueOfElements.push(currentElement); //push a la cola de eventos
+             //generation();
          }
-
-         currentFrame = -1;
+         currentElement->setNumberFileName(-1);
+         //currentFrame = -1;
      }
-     void generation(){
+     void generation(Element* pCurrentElement){
 
         string attribute = "";
         //añadir el elemento al del archivo svg actual
 
-        currentElement->createSVGAttribute(&myDoc);
-
-        if (createAnotherSVG){
+        //currentElement->createSVGAttribute(&myDoc);
+        pCurrentElement->createSVGAttribute(&myDoc);
+        //ifcreateAnotherSVG==true
+        if (pCurrentElement->getGenerateElement()==true){
              string fileName = "svg";
-             fileName.append(to_string(currentFrame));
+             fileName.append(to_string(pCurrentElement->getNumberFileName()));
              fileName.append(".xml");
              fileName = "svganimation/images/svg/" + fileName;
 
@@ -110,7 +117,7 @@
              theNewFile << stringXML; //Escribe el string en el archivo
              theNewFile.close();
 
-             createAnotherSVG = false;
+             //createAnotherSVG = false;
          }
      }
 
@@ -120,10 +127,10 @@
              std::this_thread::sleep_for(std::chrono::milliseconds(100));
              //sleep(1);
              if(!queueOfElements.empty()){
-                 Generation::generation();
+                 Generation::generation(queueOfElements.front());
                  queueOfElements.pop();
              }
-             if(currentFrame == -1 && queueOfElements.empty()){
+             if(queueOfElements.front()->getNumberFileName()==-1){
                  break;
              }
 
@@ -136,12 +143,12 @@
          file<> file(svgFileName);
          Generation::myDoc.parse<0>(file.data());
 
-         //thread thread1(&consumer, this);
+         thread thread1(&consumer, this);
          producer(pElementsList, pFrames);
 
         // //join permite que un hilo espere a que otro termine su ejecución
         // //hilo1.join();
-         //thread1.join();
+         thread1.join();
 
      }
 

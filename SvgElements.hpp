@@ -7,29 +7,28 @@
 class Element{
     protected:
         double coordX, coordY, coordX2, coordY2, side, area, finalCoordX, finalCoordY, hypotenuse, displacement, auxCoordX, auxCoordY;
-        bool rect;
+        bool rect,generateElement;
         vector<vector<int>> movements; // { {x,y}, {}, {}, {} }
         vector<vector<int>> movements2;
         string color, attribute;
+        int fileName;
     public:
         Element(){};
-        Element(double newSide){side=newSide;};
-        Element(double newYValue, double newXValue){};
+        Element(double pNewSide){side=pNewSide;};
+        Element(double pNewXValue, double pNewYValue){coordX=pNewXValue;coordY=pNewYValue;};
         void setAttribute(string pNewAttribute){attribute = pNewAttribute;};
-        void setXCoord(double newXValue){coordX=newXValue;};
-        void setYCoord(double newYValue){coordY=newYValue;};
-        void setAuxXCoord(double newAuxXValue){auxCoordX=newAuxXValue;};
-        void setAuxYCoord(double newAuxYValue){auxCoordY=newAuxYValue;};
+        void setXCoord(double pNewXValue){coordX=pNewXValue;};
+        void setYCoord(double pNewYValue){coordY=pNewYValue;};
+        void setAuxXCoord(double pNewAuxXValue){auxCoordX=pNewAuxXValue;};
+        void setAuxYCoord(double pNewAuxYValue){auxCoordY=pNewAuxYValue;};
         void setFinalXCoord(double pNewfinalCoordX){finalCoordX = pNewfinalCoordX;};
         void setFinalYCoord(double pNewfinalCoordY){finalCoordY = pNewfinalCoordY;};
         void setHypotenuse(double pNewHypotenuse){hypotenuse = pNewHypotenuse;};
         void setDisplacement(double pNewDisplacement){displacement = pNewDisplacement;};
-        void setSide(double newSide){side=newSide;};
-        void setRect(bool newRect){rect = newRect;};
-        //void setArea(double newArea){area=newArea;};
-        //virtual void setArea(){};
+        void setSide(double pNewSide){side=pNewSide;};
+        void setRect(bool pNewRect){rect = pNewRect;};
         virtual void findMatchPosition(){};
-        void setColor(string newColor){color=newColor;};
+        void setColor(string pNewColor){color=pNewColor;};
         double getXCoord(){return coordX;};
         double getYCoord(){return coordY;};
         double getAuxXCoord(){return auxCoordX;};
@@ -44,17 +43,20 @@ class Element{
         string getAttribute(){return attribute;};
         vector<vector<int>> getMovements(){return movements;};
         bool isRect(){return rect;};
-        void addMovement(int x, int y){
-            vector<int> point = {x,y}; movements.push_back(point);
+        void addMovement(int pXValue, int pYValue){
+            vector<int> point = {pXValue,pYValue}; movements.push_back(point);
         };
 
-        void setLineEndXValue(double newEndXValue){coordX2=newEndXValue;};
-        void setLineEndYValue(double newEndYValue){coordY2=newEndYValue;};
+        void setLineEndXValue(double pNewEndXValue){coordX2=pNewEndXValue;};
+        void setLineEndYValue(double pNewEndYValue){coordY2=pNewEndYValue;};
         double getLineEndXValue(){return coordX2;};
         double getLineEndYValue(){return coordY2;};
         vector<vector<int>> getMovements2(){return movements2;};
         void addMovement2(int pNewX2, int pNewY2){vector<int> point = {pNewX2,pNewY2}; movements2.push_back(point);}
-
+        void setGenerateElement(bool state){generateElement=state;};
+        bool getGenerateElement(){return generateElement;};
+        void setNumberFileName(int pFileName){fileName=pFileName;};
+        int getNumberFileName(){return fileName;};
         virtual void createSVGAttribute(xml_document<> *myDoc){};
 };
 
@@ -64,8 +66,7 @@ class Circle:public Element{
         Circle(){ Element::attribute = "circle";};
         Circle(double pNewRadio, double pNewXCoord, double pNewYCoord, string pNewColor){Element::setXCoord(pNewXCoord);Element::setYCoord(pNewYCoord);
         Element::setSide(pNewRadio);Element::setColor(pNewColor); Element::attribute = "circle";};
-        Circle(double newRadio){Element::setSide(newRadio); Element::attribute = "circle";};
-        void setArea(){Element::area= (2 * acos(0.0))*pow(Element::side,2.0);};
+        Circle(double pNewRadio){Element::setSide(pNewRadio); Element::attribute = "circle";};
         bool findMatchPosition(double pXValue, double pYValue);
 
         void createSVGAttribute(xml_document<> *myDoc){
