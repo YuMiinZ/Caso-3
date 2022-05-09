@@ -148,8 +148,8 @@ public:
        {
            //cout << pPath << endl;
        }
-       
-        
+
+
     }
 
     void selectPathPoints(vector<vector<double>>* pAllPoints, string pPoints, double pXMoveValue,double pYMoveValue){
@@ -323,12 +323,7 @@ public:
         }
         else if(string(pNode->name())=="path"){
             string pathValue=pNode->first_attribute("d")->value();
-<<<<<<< HEAD
-            double pathXValue, pathYValue;
-=======
-            //cout << pNode->first_attribute("d")->value() << endl;
             double pathXValue = 0, pathYValue = 0;
->>>>>>> master
             getMoveValues(pathXValue,pathYValue,pathValue);
             Path* newPath=new Path(pathXValue,pathYValue,selectPathRange(pathValue,pathXValue,pathYValue),pMatchColor);
             newPath->setAttributeD(pNode->first_attribute("d")->value());
