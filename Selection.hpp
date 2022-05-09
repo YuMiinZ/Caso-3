@@ -143,50 +143,67 @@ public:
         pYValue=stod(pPath.substr(0,pPath.find(",")));
     }
 
-    void selectPathPoints(vector<vector<double>>* pAllPoints, string pPoints){
+    void selectPathPoints(vector<vector<double>>* pAllPoints, string pPoints, double pXMoveValue,double pYMoveValue){
         /*
         Functioning: Extract each point xy from the string of points and store them in the vector pAllPoints.
 
         Input:
         -pAllPoints
         -pPoints
+        -pXMoveValue
+        -pYMoveValue
 
         Output: N/A
 
         */
         vector<double> vectorXYPoints;
+        double xyPoint;
         try
         {
            while(!pPoints.empty()){
             vectorXYPoints.push_back(stoi(pPoints.substr(0, pPoints.find(","))));
             pPoints.erase(0,pPoints.find(",")+1);
             if(pPoints.find(" ")!= string::npos){
-                vectorXYPoints.push_back(stoi(pPoints.substr(0, pPoints.find(" "))));
+                if(stoi(pPoints.substr(0, pPoints.find(" ")))<0){
+                    xyPoint=stoi(pPoints.substr(0, pPoints.find(" ")))-pXMoveValue;
+                }
+                else{
+                    xyPoint=stoi(pPoints.substr(0, pPoints.find(" ")));
+                }
+                vectorXYPoints.push_back(xyPoint);
                 pPoints.erase(0,pPoints.find(" ")+1);
             }
             else{
-                vectorXYPoints.push_back(stoi(pPoints.substr(0, pPoints.length())));
+                if(stoi(pPoints.substr(0, pPoints.find(" ")))<0){
+                    xyPoint=stoi(pPoints.substr(0, pPoints.find(" ")))-pYMoveValue;
+                }
+                else{
+                    xyPoint=stoi(pPoints.substr(0, pPoints.find(" ")));
+                }
+                vectorXYPoints.push_back(xyPoint);
                 pPoints.erase(0,pPoints.length());
             }
             pAllPoints->push_back(vectorXYPoints);
             vectorXYPoints.clear();
-        } /* code */
+            } /* code */
         }
         catch(const std::exception& e)
         {
             cout << "jump" << endl;
         }
-        
-        
+
+
     }
 
-    vector<vector<double>> selectPathRange(string pPath){
+    vector<vector<double>> selectPathRange(string pPath, double pXMoveValue, double pYMoveValue){
         /*
         Functioning: Extracts the range of xy values from the Cc, Ll, Hh and Vv commands of the path and then calls the selectPathPoints function
          to extract each of those points and store it in the vector of path points.
 
         Input:
         -pPath
+        -pXMoveValue
+        -pYMoveValue
 
         Output:
         -pathPoints
@@ -203,13 +220,13 @@ public:
                 tempPath.erase(0,commandPosition+2);
                 commandPosition=tempPath.find_first_of("ZzCcLlHhVvSsQqTtAa");
                 if(pathCommands[position]=="Hh"){
-                    selectPathPoints(&pathPoints,tempPath.substr(0,commandPosition).append("0"));
+                    selectPathPoints(&pathPoints,tempPath.substr(0,commandPosition).append("0"),pXMoveValue,pYMoveValue);
                 }
                 else if(pathCommands[position]=="Vv"){
-                    selectPathPoints(&pathPoints,"0 "+tempPath.substr(0,commandPosition));
+                    selectPathPoints(&pathPoints,"0 "+tempPath.substr(0,commandPosition),pXMoveValue,pYMoveValue);
                 }
                 else{
-                    selectPathPoints(&pathPoints,tempPath.substr(0,commandPosition-1));
+                    selectPathPoints(&pathPoints,tempPath.substr(0,commandPosition-1),pXMoveValue,pYMoveValue);
                 }
                 tempPath.erase(0,commandPosition);
                 commandPosition=tempPath.find_first_of(pathCommands[position]);
@@ -297,10 +314,9 @@ public:
         }
         else if(string(pNode->name())=="path"){
             string pathValue=pNode->first_attribute("d")->value();
-            //cout << pNode->first_attribute("d")->value() << endl;
             double pathXValue, pathYValue;
             getMoveValues(pathXValue,pathYValue,pathValue);
-            Path* newPath=new Path(pathXValue,pathYValue,selectPathRange(pathValue),pMatchColor);
+            Path* newPath=new Path(pathXValue,pathYValue,selectPathRange(pathValue,pathXValue,pathYValue),pMatchColor);
             newPath->setAttributeD(pNode->first_attribute("d")->value());
             for(int position=0;position<pPositions.size();position++){
                 if(newPath->findMatchPosition(pPositions[position][0],pPositions[position][1])){
